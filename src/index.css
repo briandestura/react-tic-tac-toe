@@ -44,6 +44,10 @@ body {
     display: flex;
     flex-direction: row;
   }
+
+  .bold {
+    font-weight: bold;
+  }
   
   .game-info {
     margin-left: 20px;

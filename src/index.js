@@ -80,6 +80,15 @@ class Board extends React.Component {
     />;
   }
 
+  renderRow(row){
+    let columns = [0, 1, 2];
+    return (
+      <div className="board-row">
+        { columns.map(column => this.renderSquare((row * 3) + column)) }
+      </div>
+    );
+  }
+
   render() {
     // const winner = calculateWinner(this.state.squares);
     // let status
@@ -91,20 +100,21 @@ class Board extends React.Component {
     //   status = 'Next player: ' +  (this.state.xIsNext ? 'X' : 'O');
     // }
 
-    let rows = [];
-    let num = 0;
-    for (let x = 0; x < 3; x++) {
-      let row_items = []
-      for (let y = 0; y < 3; y++) {
-        row_items.push(this.renderSquare(num));
-        num++;
-      }
-      rows.push(<div className="board-row">{row_items}</div>);
-    }
+    // let rows = [];
+    // let num = 0;
+    // for (let x = 0; x < 3; x++) {
+    //   let row_items = []
+    //   for (let y = 0; y < 3; y++) {
+    //     row_items.push(this.renderSquare(num));
+    //     num++;
+    //   }
+    //   rows.push(<div className="board-row">{row_items}</div>);
+    // }
 
+    let rows = [0, 1, 2]
     return (
       <div>
-        {rows}
+        { rows.map(row => this.renderRow(row)) }
       </div>
     );
   }
@@ -120,6 +130,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      ascendingOrder: true,
     }
   }
 
@@ -149,6 +160,12 @@ class Game extends React.Component {
     });
   }
 
+  toggleOrder(){
+    this.setState({
+      ascendingOrder: !this.state.ascendingOrder,
+    });
+  }
+
   render() {
 
     const history = this.state.history;
@@ -159,12 +176,19 @@ class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
+
+      let bold = (this.state.stepNumber === move ? 'bold' : '');
+
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button class={bold} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
+
+    if (!this.state.ascendingOrder){
+      moves.sort((a,b) => { return b.key - a.key })
+    }
 
     let status
     if (winner) {
@@ -186,6 +210,11 @@ class Game extends React.Component {
         <div className="game-info">
           <div>{ status }</div>
           <ol>{ moves }</ol>
+          <button
+            onClick={() => this.toggleOrder()}
+          >
+            Toggle Order
+          </button>
         </div>
       </div>
     );
