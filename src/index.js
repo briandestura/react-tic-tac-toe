@@ -91,23 +91,20 @@ class Board extends React.Component {
     //   status = 'Next player: ' +  (this.state.xIsNext ? 'X' : 'O');
     // }
 
+    let rows = [];
+    let num = 0;
+    for (let x = 0; x < 3; x++) {
+      let row_items = []
+      for (let y = 0; y < 3; y++) {
+        row_items.push(this.renderSquare(num));
+        num++;
+      }
+      rows.push(<div className="board-row">{row_items}</div>);
+    }
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {rows}
       </div>
     );
   }
